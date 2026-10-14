@@ -3,217 +3,396 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RetroRadio Reverse | Preservación e Ingeniería Inversa de Radios Vintage</title>
+  <title>RETRO-RADIO REVERSE // RIG LAB</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@600;800;900&family=VT323&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0d1117;
-      --card-bg: #161b22;
-      --border: #30363d;
-      --accent: #58a6ff;
-      --accent-green: #3fb950;
-      --text: #c9d1d9;
-      --text-muted: #8b949e;
-      --heading: #f0f6fc;
-      --code-bg: #090d13;
+      --chassis-dark: #121417;
+      --chassis-metal: #1d2127;
+      --chassis-bezel: #282e36;
+      --amber: #ffb000;
+      --amber-glow: rgba(255, 176, 0, 0.45);
+      --amber-dark: #3a2800;
+      --green-led: #33ff33;
+      --green-glow: rgba(51, 255, 51, 0.4);
+      --red-led: #ff3333;
+      --lcd-bg: #0b150c;
+      --lcd-text: #59f379;
+      --lcd-glow: rgba(89, 243, 121, 0.35);
+      --screw: #48525e;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', -apple-system, sans-serif;
-      line-height: 1.6;
-      padding: 0 1rem 4rem;
+      background: #080a0c radial-gradient(circle at 50% 20%, #151a21 0%, #060709 100%);
+      color: #b0bac5;
+      font-family: 'Share Tech Mono', monospace;
+      padding: 2rem 1rem;
+      min-height: 100vh;
     }
-    header {
-      max-width: 960px;
-      margin: 4rem auto 3rem;
-      text-align: center;
+
+    /* CHASIS DEL EQUIPO */
+    .rig-cabinet {
+      max-width: 980px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #262c35 0%, var(--chassis-metal) 4%, var(--chassis-dark) 100%);
+      border: 3px solid #3d4552;
+      border-radius: 12px;
+      box-shadow: 
+        0 20px 50px rgba(0,0,0,0.8),
+        inset 0 2px 3px rgba(255,255,255,0.15),
+        inset 0 -3px 5px rgba(0,0,0,0.8);
+      position: relative;
+      padding: 2rem;
     }
-    .badge {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-family: 'JetBrains Mono', monospace;
-      background: rgba(88, 166, 255, 0.15);
-      color: var(--accent);
-      border: 1px solid rgba(88, 166, 255, 0.3);
-      margin-bottom: 1.5rem;
+
+    /* TORNILLOS EN LAS ESQUINAS */
+    .screw {
+      width: 14px;
+      height: 14px;
+      background: radial-gradient(circle, #5a6575 30%, #20252c 90%);
+      border-radius: 50%;
+      position: absolute;
+      border: 1px solid #1a1e24;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.4);
     }
-    h1 {
-      font-size: 2.75rem;
-      font-weight: 800;
-      color: var(--heading);
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
+    .screw::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 2px;
+      width: 8px;
+      height: 1.5px;
+      background: #111418;
     }
-    p.lead {
-      font-size: 1.25rem;
-      color: var(--text-muted);
-      max-width: 700px;
-      margin: 0 auto 2rem;
-    }
-    .btn-group {
+    .screw-tl { top: 12px; left: 12px; transform: rotate(25deg); }
+    .screw-tr { top: 12px; right: 12px; transform: rotate(115deg); }
+    .screw-bl { bottom: 12px; left: 12px; transform: rotate(65deg); }
+    .screw-br { bottom: 12px; right: 12px; transform: rotate(190deg); }
+
+    /* HEADER & RACK HANDLES */
+    .rig-header {
+      border-bottom: 2px solid #282f3a;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
       gap: 1rem;
-      justify-content: center;
+    }
+    .brand-plate {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .brand-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: #e2e8f0;
+      text-transform: uppercase;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      border-left: 4px solid var(--amber);
+      padding-left: 0.75rem;
+    }
+    .model-badge {
+      background: #101317;
+      border: 1px solid #3d4654;
+      padding: 0.35rem 0.75rem;
+      border-radius: 3px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+    }
+
+    /* PANTALLA LCD / VFD VERDE TIPO YAESU FT-747 */
+    .vfo-display {
+      background: var(--lcd-bg);
+      border: 4px solid #1c231e;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0,0,0,0.5);
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .vfo-display::before {
+      content: " ";
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+      background-size: 100% 4px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .vfo-top-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #3b9b4f;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    .vfo-main {
+      font-family: 'VT323', monospace;
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--lcd-text);
+      text-shadow: 0 0 12px var(--lcd-glow);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
       flex-wrap: wrap;
     }
-    a.btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      border-radius: 6px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s;
+    .s-meter {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--amber);
+      margin-top: 0.75rem;
+      letter-spacing: 0.05em;
     }
-    a.btn-primary {
-      background: #238636;
-      color: #fff;
+    .s-bars {
+      color: var(--amber);
+      text-shadow: 0 0 8px var(--amber-glow);
     }
-    a.btn-primary:hover { background: #2ea043; }
-    a.btn-secondary {
-      background: var(--card-bg);
-      color: var(--heading);
-      border: 1px solid var(--border);
+
+    /* STATUS LEDS */
+    .led-cluster {
+      display: flex;
+      gap: 1.5rem;
+      background: #0d1013;
+      padding: 0.6rem 1rem;
+      border-radius: 4px;
+      border: 1px solid #232933;
     }
-    a.btn-secondary:hover { background: #21262d; border-color: #8b949e; }
-    main {
-      max-width: 960px;
-      margin: 0 auto;
-    }
-    section {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-    }
-    h2 {
-      font-size: 1.5rem;
-      color: var(--heading);
-      margin-bottom: 1.25rem;
+    .led-item {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
     }
+    .led-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #2a3038;
+    }
+    .led-on-green { background: var(--green-led); box-shadow: 0 0 8px var(--green-glow); }
+    .led-on-amber { background: var(--amber); box-shadow: 0 0 8px var(--amber-glow); }
+    .led-on-red   { background: var(--red-led); box-shadow: 0 0 8px rgba(255, 51, 51, 0.6); }
+
+    /* PANELES DE CONTENIDO */
+    .module-card {
+      background: #14181e;
+      border: 1px solid #2a323d;
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .module-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      color: var(--amber);
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      border-bottom: 1px dashed #2a323d;
+      padding-bottom: 0.5rem;
+    }
+
+    /* TABLA TIPO PANEL DE FRECUENCIAS */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1rem;
-      font-size: 0.95rem;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
     }
     th, td {
-      padding: 0.75rem 1rem;
+      padding: 0.7rem 0.8rem;
       text-align: left;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid #232933;
     }
     th {
-      background: rgba(255, 255, 255, 0.02);
-      color: var(--heading);
+      background: #0d1014;
+      color: #8a96a3;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+    tr:hover { background: rgba(255, 176, 0, 0.04); }
+    .status-badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      background: rgba(51, 255, 51, 0.12);
+      color: #33ff33;
+      border: 1px solid rgba(51, 255, 51, 0.3);
       font-weight: 600;
     }
-    .tag-ok {
-      color: var(--accent-green);
-      font-weight: 600;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-    }
-    pre {
-      background: var(--code-bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1rem;
-      font-family: 'JetBrains Mono', monospace;
+
+    /* TERMINAL CLI / CRT */
+    .terminal-box {
+      background: #090c0f;
+      border: 1px solid #232933;
+      border-left: 3px solid var(--amber);
+      padding: 1.25rem;
+      border-radius: 4px;
+      color: #e2e8f0;
       font-size: 0.9rem;
       overflow-x: auto;
-      color: #e6edf3;
-      margin: 1rem 0;
+      line-height: 1.6;
     }
-    code { font-family: 'JetBrains Mono', monospace; color: var(--accent); }
+    .prompt { color: var(--amber); font-weight: bold; }
+    .comment { color: #5a6675; }
+
+    /* BOTONES FÍSICOS */
+    .switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(180deg, #323945 0%, #1c2128 100%);
+      color: #e2e8f0;
+      border: 1px solid #485363;
+      border-radius: 4px;
+      padding: 0.7rem 1.4rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+      transition: all 0.15s ease;
+    }
+    .switch-btn:hover {
+      background: linear-gradient(180deg, #3d4654 0%, #252c36 100%);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+    .switch-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    }
+
     footer {
       text-align: center;
-      margin-top: 4rem;
-      color: var(--text-muted);
-      font-size: 0.9rem;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #55606e;
+      letter-spacing: 0.05em;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="badge">📡 Ham Radio Open Source Initiative</div>
-    <h1>RetroRadio Reverse</h1>
-    <p class="lead">Preservación, ingeniería inversa y herramientas modernas para transceptores clásicos y software de radio de la era DOS / Win32.</p>
-    <div class="btn-group">
-      <a href="https://github.com/jmrodev/retro-radio-reverse" class="btn btn-primary">Ver Repositorio en GitHub</a>
-      <a href="#supported" class="btn btn-secondary">Equipos Soportados</a>
-    </div>
-  </header>
 
-  <main>
-    <section id="about">
-      <h2>🎯 Propósito del Proyecto</h2>
-      <p>Muchos transceptores de radioaficionado y comerciales de marcas como <strong>Yaesu/Vertex, Motorola, Kenwood e Icom</strong> dependen de programas obsoletos de 16 bits (DOS / Windows 95/XP) para grabar canales, frecuencias y subtonos CTCSS/DCS.</p>
-      <br>
-      <p>Este proyecto se dedica a:</p>
-      <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
-        <li>Desarmar y documentar los protocolos de comunicación serie y volcados de memoria EEPROM.</li>
-        <li>Desarrollar <code>retrorig</code>: software multiplataforma moderno en Python para leer y programar sin necesidad de DOSBox o PCs antiguas.</li>
-        <li>Preservar el conocimiento técnico y esquemas de cableado CAT/clonado.</li>
-      </ul>
+  <div class="rig-cabinet">
+    <div class="screw screw-tl"></div>
+    <div class="screw screw-tr"></div>
+    <div class="screw screw-bl"></div>
+    <div class="screw screw-br"></div>
+
+    <!-- PANEL SUPERIOR -->
+    <header class="rig-header">
+      <div class="brand-plate">
+        <div class="brand-logo">RetroRadio</div>
+        <div class="model-badge">REV // RIG-LAB-01</div>
+      </div>
+      <div class="led-cluster">
+        <div class="led-item"><div class="led-dot led-on-green"></div> POWER</div>
+        <div class="led-item"><div class="led-dot led-on-amber"></div> RX-CAT</div>
+        <div class="led-item"><div class="led-dot led-on-red"></div> BUSY</div>
+      </div>
+    </header>
+
+    <!-- PANTALLA PRINCIPAL VFO / FRECUENCIA -->
+    <section class="vfo-display">
+      <div class="vfo-top-row">
+        <span>VFO-A · USB · FAST · 4800 BAUD 8N2</span>
+        <span>MEM CH: 01 · SPLIT: OFF</span>
+      </div>
+      <div class="vfo-main">
+        <span>07.100.00 <span style="font-size: 2rem; color: #3b9b4f;">MHz</span></span>
+        <span style="font-size: 2rem; color: var(--amber);">[ CAT OK ]</span>
+      </div>
+      <div class="s-meter">
+        SIG METER: <span class="s-bars">■■■■■■■■■■■■□□□</span> S9 +20dB · RF-PWR: 100W
+      </div>
     </section>
 
-    <section id="supported">
-      <h2>📻 Equipos y Estado de Análisis</h2>
+    <!-- PROPÓSITO DEL PROYECTO -->
+    <section class="module-card">
+      <div class="module-title"><span>[01]</span> ALCANCE Y PRESERVACIÓN</div>
+      <p>Muchos transceptores legendarios de radioaficionado y comerciales de <strong>Yaesu / Vertex Standard, Motorola, Kenwood e Icom</strong> dependen de software de clonación de 16 bits para MS-DOS o Windows 3.1/95/XP para configurar canales, subtonos CTCSS/DCS y parámetros de PLL.</p>
+      <br>
+      <p><strong>RetroRadio Reverse</strong> realiza ingeniería inversa a los binarios originales (.EXE) y al protocolo serie TTL para desarrollar herramientas de código abierto, multiplataforma y sin dependencias de sistemas operativos obsoletos.</p>
+    </section>
+
+    <!-- EQUIPOS SOPORTADOS -->
+    <section class="module-card">
+      <div class="module-title"><span>[02]</span> BANCO DE ANÁLISIS // RADIOS REVERTIDAS</div>
       <table>
         <thead>
           <tr>
             <th>Marca</th>
             <th>Modelo</th>
-            <th>Tipo</th>
+            <th>Banda / Tipo</th>
             <th>Software Original</th>
-            <th>Estado en RetroRadio</th>
+            <th>Estado Protocolo</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Yaesu / Vertex</strong></td>
-            <td>FTL-2011 / FTL-7011 / FTL-1011</td>
+            <td>FTL-2011 / 7011 / 1011</td>
             <td>Canalera VHF/UHF</td>
-            <td>CE5 (DOS 1993)</td>
-            <td><span class="tag-ok">✔ Protocolo y Checksum Revertidos</span></td>
+            <td>CE5 (MS-DOS 1993)</td>
+            <td><span class="status-badge">✔ SUM8 CHECKSUM & 411B PAYLOAD REVERTIDO</span></td>
           </tr>
           <tr>
             <td><strong>Yaesu</strong></td>
             <td>FT-747GX</td>
-            <td>Transceptor HF</td>
-            <td>CAT 5-byte protocol</td>
-            <td><span class="tag-ok">✔ Trama y Opcodes Documentados</span></td>
+            <td>Transceptor HF (All-Band)</td>
+            <td>FIF-232 CAT Control</td>
+            <td><span class="status-badge">✔ 5-BYTE BCD CAT PROTOCOL REVERTIDO</span></td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="tooling">
-      <h2>⚡ Software: retrorig</h2>
-      <p>CLI moderno en desarrollo para interactuar directamente con los equipos:</p>
-      <pre><code># Clonar dump de memoria desde la radio
-retrorig read ftl2011 /dev/ttyUSB0 -o backup.bin
+    <!-- CLI RETRORIG -->
+    <section class="module-card">
+      <div class="module-title"><span>[03]</span> HERRAMIENTA NATIVA: retrorig (CLI)</div>
+      <div class="terminal-box">
+<span class="comment"># 1. Volcar la memoria EEPROM directamente desde la radio vía USB-TTL</span>
+<span class="prompt">$</span> retrorig read ftl2011 /dev/ttyUSB0 -o backup.bin
 
-# Exportar lista de canales a formato editable (CSV)
-retrorig dump backup.bin -o canales.csv
+<span class="comment"># 2. Exportar la matriz de canales y subtonos a CSV legible</span>
+<span class="prompt">$</span> retrorig dump backup.bin -o canales.csv
 
-# Control CAT en vivo para equipos HF (FT-747GX)
-retrorig cat ft747 /dev/ttyUSB0 --freq 7100000 --mode lsb</code></pre>
+<span class="comment"># 3. Control CAT en vivo para equipos HF clásicos (Yaesu FT-747GX)</span>
+<span class="prompt">$</span> retrorig cat ft747 /dev/ttyUSB0 --freq 7100000 --mode lsb
+      </div>
+      <br>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="https://github.com/jmrodev/retro-radio-reverse" class="switch-btn">Acceder al Repositorio</a>
+        <a href="https://github.com/jmrodev/retro-radio-reverse/issues" class="switch-btn">Reportar Equipo / Dump</a>
+      </div>
     </section>
-  </main>
 
-  <footer>
-    <p>RetroRadio Reverse · Proyecto Comunitario de Código Abierto (MIT) · <a href="https://github.com/jmrodev/retro-radio-reverse" style="color: var(--accent);">GitHub @jmrodev</a></p>
-  </footer>
+    <footer>
+      RETRO-RADIO REVERSE // LAB STATION JMRODEV // LICENCIA MIT // HAM RADIO RESEARCH
+    </footer>
+  </div>
+
 </body>
 </html>
